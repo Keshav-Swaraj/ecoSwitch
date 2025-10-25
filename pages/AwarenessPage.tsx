@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Header from '../components/Header';
 import LeftSidebar from '../components/LeftSidebar';
 import RightSidebar from '../components/RightSidebar';
@@ -70,26 +70,198 @@ const mythAndFactTopics = [
 ];
 
 const AwarenessCard: React.FC<typeof awarenessTopics[0]> = ({ icon, title, description, category }) => (
-    <div className="bg-[#2a211c]/80 border border-amber-900/50 rounded-2xl p-6 backdrop-blur-sm flex flex-col h-full">
-        {icon && <div className="w-10 h-10 mb-4 text-amber-400">{icon}</div>}
-        <p className="font-poppins text-xs font-bold tracking-widest text-amber-400 uppercase mb-2">{category}</p>
-        <h3 className="font-poppins text-xl font-bold text-white tracking-wider mb-3">{title}</h3>
-        <p className="text-white/70 text-sm leading-relaxed">{description}</p>
+    <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border-2 border-amber-500/60 rounded-2xl p-6 backdrop-blur-sm flex flex-col h-full shadow-lg hover:border-amber-400/80 hover:shadow-xl transition-all duration-300 relative">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10 blur-sm"></div>
+        <div className="relative z-10">
+            {icon && <div className="w-10 h-10 mb-4 text-amber-400">{icon}</div>}
+            <p className="font-poppins text-xs font-bold tracking-widest text-amber-400 uppercase mb-2">{category}</p>
+            <h3 className="font-poppins text-xl font-bold text-white tracking-wider mb-3">{title}</h3>
+            <p className="text-white/70 text-sm leading-relaxed">{description}</p>
+        </div>
     </div>
 );
 
 const MythFactCard: React.FC<typeof mythAndFactTopics[0]> = ({ myth, fact }) => (
-    <div className="bg-[#2a211c]/80 border border-amber-900/50 rounded-2xl p-6 backdrop-blur-sm flex flex-col h-full">
-        <div className="mb-4">
-            <p className="font-poppins text-xs font-bold tracking-widest text-red-400 uppercase mb-2">Myth</p>
-            <p className="text-white/80 text-sm italic">"{myth}"</p>
-        </div>
-        <div className="mt-auto pt-4 border-t border-amber-800/40">
-            <p className="font-poppins text-xs font-bold tracking-widest text-green-400 uppercase mb-2">Fact</p>
-            <p className="text-white/90 text-sm font-semibold">{fact}</p>
+    <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border-2 border-amber-500/60 rounded-2xl p-6 backdrop-blur-sm flex flex-col h-full shadow-lg hover:border-amber-400/80 hover:shadow-xl transition-all duration-300 relative">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10 blur-sm"></div>
+        <div className="relative z-10">
+            <div className="mb-4">
+                <p className="font-poppins text-xs font-bold tracking-widest text-red-400 uppercase mb-2">Myth</p>
+                <p className="text-white/80 text-sm italic">"{myth}"</p>
+            </div>
+            <div className="mt-auto pt-4 border-t border-amber-500/40">
+                <p className="font-poppins text-xs font-bold tracking-widest text-green-400 uppercase mb-2">Fact</p>
+                <p className="text-white/90 text-sm font-semibold">{fact}</p>
+            </div>
         </div>
     </div>
 );
+
+const AIChatbot: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [messages, setMessages] = useState([
+        {
+            id: 1,
+            text: "Hello! I'm your Clean Energy AI Assistant. I can help you learn about renewable energy, answer questions about sustainability, and provide insights about energy efficiency. What would you like to know?",
+            isBot: true,
+            timestamp: new Date()
+        }
+    ]);
+    const [inputValue, setInputValue] = useState('');
+    const [isTyping, setIsTyping] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const handleSendMessage = async () => {
+        if (!inputValue.trim()) return;
+
+        const userMessage = {
+            id: messages.length + 1,
+            text: inputValue,
+            isBot: false,
+            timestamp: new Date()
+        };
+
+        setMessages(prev => [...prev, userMessage]);
+        setInputValue('');
+        setIsTyping(true);
+
+        // Simulate AI response
+        setTimeout(() => {
+            const botResponse = {
+                id: messages.length + 2,
+                text: getAIResponse(inputValue),
+                isBot: true,
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, botResponse]);
+            setIsTyping(false);
+        }, 1500);
+    };
+
+    const getAIResponse = (userInput: string): string => {
+        const input = userInput.toLowerCase();
+        
+        if (input.includes('solar') || input.includes('photovoltaic')) {
+            return "Solar energy is one of the most promising renewable energy sources! Solar panels convert sunlight directly into electricity using photovoltaic cells. The cost of solar has dropped by over 80% in the last decade, making it increasingly accessible. Solar energy produces zero emissions during operation and can significantly reduce your carbon footprint.";
+        }
+        
+        if (input.includes('wind') || input.includes('turbine')) {
+            return "Wind energy harnesses the power of moving air to generate electricity through wind turbines. Modern wind farms can be located onshore or offshore, and they're becoming increasingly efficient. Wind energy is clean, renewable, and can provide substantial amounts of power. The technology has advanced significantly, making turbines quieter and more wildlife-friendly.";
+        }
+        
+        if (input.includes('lng') || input.includes('natural gas')) {
+            return "Liquefied Natural Gas (LNG) is natural gas that's been cooled to liquid form for easier transport and storage. While it's a fossil fuel, LNG burns much cleaner than coal or oil, producing significantly fewer emissions. It's often considered a transitional fuel that can help bridge the gap to a fully renewable energy future.";
+        }
+        
+        if (input.includes('carbon') || input.includes('footprint') || input.includes('emission')) {
+            return "Your carbon footprint represents the total greenhouse gas emissions caused by your activities. You can reduce it by using renewable energy, improving energy efficiency, choosing sustainable transportation, and making conscious consumption choices. Every small action contributes to a larger positive impact!";
+        }
+        
+        if (input.includes('renewable') || input.includes('clean energy')) {
+            return "Renewable energy comes from sources that naturally replenish themselves, like sunlight, wind, water, and geothermal heat. These sources are crucial for combating climate change and reducing our dependence on fossil fuels. The transition to renewables is accelerating globally, with costs continuing to decrease and efficiency improving.";
+        }
+        
+        if (input.includes('cost') || input.includes('expensive') || input.includes('price')) {
+            return "The cost of renewable energy has been decreasing rapidly! Solar and wind are now often cheaper than fossil fuels in many regions. Government incentives, tax credits, and financing options make clean energy more accessible. The long-term savings on energy bills typically offset the initial investment within a few years.";
+        }
+        
+        return "That's a great question about clean energy! While I have extensive knowledge about renewable energy sources, sustainability practices, and energy efficiency, I'd recommend exploring our awareness cards below for more detailed information. Feel free to ask me about solar, wind, LNG, carbon footprints, or any other energy-related topics!";
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
+
+    return (
+        <div className="w-full max-w-4xl mx-auto mb-16">
+            <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border-2 border-amber-500/60 rounded-3xl p-8 backdrop-blur-sm shadow-2xl hover:border-amber-400/80 hover:shadow-3xl transition-all duration-300 relative">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10 blur-sm"></div>
+                <div className="relative z-10">
+                <div className="text-center mb-8">
+                    <div className="flex items-center justify-center mb-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-amber-500/20 to-amber-600/10 rounded-full flex items-center justify-center border border-amber-500/30">
+                            <svg className="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <h2 className="font-poppins text-3xl font-bold text-amber-400 mb-2">AI Energy Assistant</h2>
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-4"></div>
+                    <p className="text-white/80 text-lg">Ask me anything about clean energy, sustainability, or energy efficiency!</p>
+                </div>
+
+                {/* Chat Interface */}
+                <div className="bg-black/30 rounded-2xl border border-amber-800/30 overflow-hidden">
+                    {/* Messages */}
+                    <div className="h-80 overflow-y-auto p-4 space-y-4">
+                        {messages.map((message) => (
+                            <div key={message.id} className={`flex ${message.isBot ? 'justify-start' : 'justify-end'}`}>
+                                <div className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl ${
+                                    message.isBot 
+                                        ? 'bg-amber-500/10 border border-amber-500/20 text-white/90' 
+                                        : 'bg-amber-400 text-black font-medium'
+                                }`}>
+                                    <p className="text-sm leading-relaxed">{message.text}</p>
+                                    <p className={`text-xs mt-1 ${message.isBot ? 'text-white/50' : 'text-black/60'}`}>
+                                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
+                        
+                        {isTyping && (
+                            <div className="flex justify-start">
+                                <div className="bg-amber-500/10 border border-amber-500/20 px-4 py-3 rounded-2xl">
+                                    <div className="flex space-x-1">
+                                        <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce"></div>
+                                        <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                        <div className="w-2 h-2 bg-amber-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    {/* Input */}
+                    <div className="p-4 border-t border-amber-800/30">
+                        <div className="flex space-x-3">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                onKeyPress={handleKeyPress}
+                                placeholder="Ask about solar, wind, LNG, carbon footprint..."
+                                className="flex-1 bg-black/40 border border-amber-700/50 rounded-xl px-4 py-3 text-white placeholder-white/50 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                            />
+                            <button
+                                onClick={handleSendMessage}
+                                disabled={!inputValue.trim() || isTyping}
+                                className="bg-amber-400 text-black font-bold px-6 py-3 rounded-xl hover:bg-amber-300 transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 
 const AwarenessPage: React.FC = () => {
@@ -104,31 +276,56 @@ const AwarenessPage: React.FC = () => {
                 <LeftSidebar />
                 <RightSidebar />
                 <main className="min-h-screen flex flex-col items-center justify-center pt-32 pb-16">
+                    {/* Hero Section */}
                     <div className="text-center mb-12 px-4">
-                        <h1 className="font-poppins text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] flex items-center justify-center">
-                            <AwarenessIcon />
-                            <span className="ml-4">Clean Energy Awareness</span>
+                        <h1 className="font-poppins text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] flex items-center justify-center mb-4">
+                            <div className="w-8 h-8 mr-3">
+                                <AwarenessIcon />
+                            </div>
+                            <span>Clean Energy <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">Awareness</span></span>
                         </h1>
-                        <p className="mt-4 text-white/70 text-lg max-w-3xl mx-auto">Learn about different energy sources and how they impact our world. Knowledge is the first step towards a sustainable future.</p>
+                        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-4"></div>
+                        <p className="text-white/80 text-lg max-w-3xl mx-auto leading-relaxed">
+                            Learn about different energy sources and how they impact our world. Knowledge is the first step towards a sustainable future.
+                        </p>
                     </div>
 
-                    <div className="w-full relative overflow-hidden group py-6">
-                        <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
-                            {[...awarenessTopics, ...awarenessTopics].map((topic, index) => (
-                                <div key={index} className="w-[350px] shrink-0 mx-3">
-                                    <AwarenessCard {...topic} />
-                                </div>
-                            ))}
+                    {/* AI Chatbot Section */}
+                    <div className="w-full max-w-5xl mx-auto px-4">
+                        <AIChatbot />
+                    </div>
+
+                    {/* Energy Sources Section */}
+                    <div className="w-full max-w-6xl mx-auto mb-16">
+                        <div className="text-center mb-12 px-4">
+                            <h2 className="font-poppins text-2xl font-bold text-white mb-4">Energy Sources</h2>
+                            <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+                        </div>
+                        <div className="w-full relative overflow-hidden group py-6">
+                            <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+                                {[...awarenessTopics, ...awarenessTopics].map((topic, index) => (
+                                    <div key={index} className="w-[350px] shrink-0 mx-3">
+                                        <AwarenessCard {...topic} />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
-                    <div className="w-full relative overflow-hidden group py-6">
-                        <div className="flex w-max animate-marquee-reverse group-hover:[animation-play-state:paused]">
-                            {[...mythAndFactTopics, ...mythAndFactTopics].map((topic, index) => (
-                                <div key={index} className="w-[350px] shrink-0 mx-3">
-                                    <MythFactCard {...topic} />
-                                </div>
-                            ))}
+                    {/* Myth vs Fact Section */}
+                    <div className="w-full max-w-6xl mx-auto mb-16">
+                        <div className="text-center mb-12 px-4">
+                            <h2 className="font-poppins text-2xl font-bold text-white mb-4">Myth vs Fact</h2>
+                            <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+                        </div>
+                        <div className="w-full relative overflow-hidden group py-6">
+                            <div className="flex w-max animate-marquee-reverse group-hover:[animation-play-state:paused]">
+                                {[...mythAndFactTopics, ...mythAndFactTopics].map((topic, index) => (
+                                    <div key={index} className="w-[350px] shrink-0 mx-3">
+                                        <MythFactCard {...topic} />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </main>

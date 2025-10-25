@@ -24,7 +24,6 @@ const Header: React.FC = () => {
           <a href="#/" onClick={(e) => handleNavigate(e, '#')} className="font-poppins font-bold tracking-widest hover:text-amber-400 transition-colors duration-300 drop-shadow-[0_0_5px_rgba(251,191,36,0.7)]">HOME</a>
           <a href="#/awareness" onClick={(e) => handleNavigate(e, '#/awareness')} className="font-poppins font-bold tracking-widest hover:text-amber-400 transition-colors duration-300 drop-shadow-[0_0_5px_rgba(251,191,36,0.7)]">AWARENESS</a>
           <a href="#/providers" onClick={(e) => handleNavigate(e, '#/providers')} className="font-poppins font-bold tracking-widest hover:text-amber-400 transition-colors duration-300 drop-shadow-[0_0_5px_rgba(251,191,36,0.7)]">PROVIDERS</a>
-          <a href="#/about" onClick={(e) => handleNavigate(e, '#/about')} className="font-poppins font-bold tracking-widest hover:text-amber-400 transition-colors duration-300 drop-shadow-[0_0_5px_rgba(251,191,36,0.7)]">ABOUT US</a>
         </nav>
 
         <div>

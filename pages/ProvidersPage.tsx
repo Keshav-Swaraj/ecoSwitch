@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
 import LeftSidebar from '../components/LeftSidebar';
-import ProvidersMapSidebar from '../components/ProvidersMapSidebar';
+import RightSidebar from '../components/RightSidebar';
 import Footer from '../components/Footer';
 import { SolarIcon, WindIcon, LngIcon, PngIcon, CbgIcon, SearchIcon, LocationIcon, ProvidersIcon } from '../components/Icons';
 
@@ -27,27 +27,30 @@ const energyTypes = [
 ];
 
 const ProviderCard: React.FC<typeof providersData[0]> = ({ name, type, rating, location, icon }) => (
-    <div className="bg-[#2a211c]/80 border border-amber-900/50 rounded-2xl p-6 backdrop-blur-sm flex flex-col hover:border-amber-500 hover:scale-[1.02] transition-all duration-300">
-        <div className="flex items-start mb-4">
-            <div className="w-12 h-12 p-2 mr-4 text-amber-400 bg-black/30 rounded-lg">{icon}</div>
-            <div>
-                <h3 className="font-poppins text-lg font-bold text-white tracking-wider">{name}</h3>
-                <p className="text-sm text-amber-300/80 font-semibold">{type} Energy</p>
+    <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border-2 border-amber-500/60 rounded-2xl p-6 backdrop-blur-sm flex flex-col hover:border-amber-400/80 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 shadow-lg relative">
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10 blur-sm"></div>
+        <div className="relative z-10">
+            <div className="flex items-start mb-4">
+                <div className="w-12 h-12 p-2 mr-4 text-amber-400 bg-black/30 rounded-lg">{icon}</div>
+                <div>
+                    <h3 className="font-poppins text-lg font-bold text-white tracking-wider">{name}</h3>
+                    <p className="text-sm text-amber-300/80 font-semibold">{type} Energy</p>
+                </div>
             </div>
+            <div className="mt-auto pt-4 border-t border-amber-500/40 flex justify-between items-center text-sm">
+                <div className="flex items-center text-white/70">
+                    <LocationIcon />
+                    <span className="ml-2">{location}</span>
+                </div>
+                <div className="flex items-center text-amber-400 font-bold">
+                    <span className="text-lg mr-1">★</span>
+                    <span>{rating}</span>
+                </div>
+            </div>
+            <button className="w-full mt-4 font-poppins bg-amber-800/80 backdrop-blur-sm border border-amber-600 text-white font-bold py-2 px-4 rounded-md hover:bg-amber-700 transition-all duration-300">
+                Contact Provider
+            </button>
         </div>
-        <div className="mt-auto pt-4 border-t border-amber-900/40 flex justify-between items-center text-sm">
-            <div className="flex items-center text-white/70">
-                <LocationIcon />
-                <span className="ml-2">{location}</span>
-            </div>
-            <div className="flex items-center text-amber-400 font-bold">
-                <span className="text-lg mr-1">★</span>
-                <span>{rating}</span>
-            </div>
-        </div>
-        <button className="w-full mt-4 font-poppins bg-amber-800/80 backdrop-blur-sm border border-amber-600 text-white font-bold py-2 px-4 rounded-md hover:bg-amber-700 transition-all duration-300">
-            Contact Provider
-        </button>
     </div>
 );
 
@@ -72,67 +75,150 @@ const ProvidersPage: React.FC = () => {
             <div className="relative z-20">
                 <Header />
                 <LeftSidebar />
+                <RightSidebar />
                 <main className="min-h-screen flex flex-col items-center justify-center pt-32 pb-16">
                     
-                    <div className="text-center mb-8">
-                        <h1 className="font-poppins text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] flex items-center justify-center">
-                            <ProvidersIcon />
-                            <span className="ml-4">Find Clean Energy Providers</span>
+                    {/* Hero Section */}
+                    <div className="text-center mb-12 px-4">
+                        <h1 className="font-poppins text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] flex items-center justify-center mb-4">
+                            <div className="w-8 h-8 mr-3">
+                                <ProvidersIcon />
+                            </div>
+                            <span>Find Clean Energy <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-yellow-200">Providers</span></span>
                         </h1>
-                        <p className="mt-4 text-white/70 text-lg max-w-2xl">Connect with certified providers for your home or industry.</p>
+                        <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-4"></div>
+                        <p className="text-white/80 text-lg max-w-3xl mx-auto leading-relaxed">
+                            Connect with certified providers for your home or industry. Explore our network of trusted energy partners.
+                        </p>
                     </div>
 
-                    <div className="w-full max-w-6xl mx-auto p-4 md:p-6 space-y-8">
-                        {/* Search and Filter */}
-                        <div className="bg-black/40 backdrop-blur-sm p-4 rounded-xl border border-amber-700/30">
-                            <div className="flex flex-col md:flex-row gap-4">
-                                <div className="flex-1 relative">
-                                    <input 
-                                        type="text"
-                                        placeholder="Search by name or location..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        className="w-full bg-black/40 p-3 pl-10 rounded-lg border-2 border-amber-800/60 focus:border-amber-500 focus:outline-none transition-colors"
-                                    />
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-500 w-5 h-5"><SearchIcon /></div>
-                                </div>
-                                <div className="flex items-center justify-center gap-2 flex-wrap">
-                                    {energyTypes.map(type => (
-                                        <button 
-                                            key={type.label}
-                                            onClick={() => setActiveFilter(type.label)}
-                                            className={`font-semibold text-sm py-2 px-4 rounded-full transition-all duration-300 flex items-center border ${
-                                                activeFilter === type.label
-                                                ? 'bg-amber-400 text-black border-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]' 
-                                                : 'bg-amber-900/50 text-amber-200/80 border-amber-800/70 hover:bg-amber-800/80 hover:text-white'
-                                            }`}
-                                        >
-                                            {type.icon && <div className="w-4 h-4 mr-2">{type.icon}</div>}
-                                            {type.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Two Column Layout */}
-                        <div className="flex flex-col lg:flex-row gap-6">
-                            {/* Left Column - Provider List */}
-                            <div className="lg:w-2/3">
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    {filteredProviders.length > 0 ? (
-                                        filteredProviders.map((provider, index) => (
-                                            <ProviderCard key={index} {...provider} />
-                                        ))
-                                    ) : (
-                                        <p className="col-span-full text-center text-white/70 py-12">No providers found. Try adjusting your search or filters.</p>
-                                    )}
-                                </div>
-                            </div>
+                    {/* Two Column Layout */}
+                    <div className="w-full max-w-7xl mx-auto px-4 md:px-6">
+                        <div className="grid lg:grid-cols-2 gap-8">
                             
+                            {/* Left Column - Providers */}
+                            <div className="space-y-6">
+                                {/* Search and Filter */}
+                                <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border border-amber-900/50 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
+                                    <h2 className="font-poppins text-2xl font-bold text-amber-400 mb-6">Search Providers</h2>
+                                    <div className="space-y-4">
+                                        <div className="relative">
+                                            <input 
+                                                type="text"
+                                                placeholder="Search by name or location..."
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                className="w-full bg-black/40 p-4 pl-12 rounded-xl border-2 border-amber-800/60 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 transition-all text-white placeholder-white/50"
+                                            />
+                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-amber-400 w-5 h-5">
+                                                <SearchIcon />
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-2 flex-wrap">
+                                            {energyTypes.map(type => (
+                                                <button 
+                                                    key={type.label}
+                                                    onClick={() => setActiveFilter(type.label)}
+                                                    className={`font-semibold text-sm py-2 px-4 rounded-full transition-all duration-300 flex items-center border ${
+                                                        activeFilter === type.label
+                                                        ? 'bg-amber-400 text-black border-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]' 
+                                                        : 'bg-amber-900/50 text-amber-200/80 border-amber-800/70 hover:bg-amber-800/80 hover:text-white'
+                                                    }`}
+                                                >
+                                                    {type.icon && <div className="w-4 h-4 mr-2">{type.icon}</div>}
+                                                    {type.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Providers List */}
+                                <div className="space-y-4">
+                                    <h3 className="font-poppins text-xl font-bold text-white mb-4">
+                                        Available Providers ({filteredProviders.length})
+                                    </h3>
+                                    <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                                        {filteredProviders.length > 0 ? (
+                                            filteredProviders.map((provider, index) => (
+                                                <div key={index} className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border-2 border-amber-500/60 rounded-xl p-4 backdrop-blur-sm hover:border-amber-400/80 hover:scale-[1.02] hover:shadow-xl transition-all duration-300 shadow-lg relative">
+                                                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-amber-500/10 via-transparent to-amber-500/10 blur-sm"></div>
+                                                    <div className="relative z-10">
+                                                    <div className="flex items-start">
+                                                        <div className="w-10 h-10 p-2 mr-4 text-amber-400 bg-black/30 rounded-lg flex-shrink-0">
+                                                            {provider.icon}
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <h4 className="font-poppins text-lg font-bold text-white tracking-wider truncate">{provider.name}</h4>
+                                                            <p className="text-sm text-amber-300/80 font-semibold">{provider.type} Energy</p>
+                                                            <div className="flex items-center justify-between mt-2">
+                                                                <div className="flex items-center text-white/70 text-sm">
+                                                                    <LocationIcon />
+                                                                    <span className="ml-1 truncate">{provider.location}</span>
+                                                                </div>
+                                                                <div className="flex items-center text-amber-400 font-bold text-sm">
+                                                                    <span className="text-base mr-1">★</span>
+                                                                    <span>{provider.rating}</span>
+                                                                </div>
+                                                            </div>
+                                                            <button className="w-full mt-3 font-poppins bg-amber-800/80 backdrop-blur-sm border border-amber-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700 transition-all duration-300 text-sm">
+                                                                Contact Provider
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="text-center text-white/70 py-12 bg-gradient-to-br from-[#2a211c]/50 to-[#1a1612]/50 rounded-xl border border-amber-900/30">
+                                                <p>No providers found. Try adjusting your search or filters.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
                             {/* Right Column - Map */}
-                            <div className="lg:w-1/3 sticky top-32">
-                                <ProvidersMapSidebar />
+                            <div className="space-y-6">
+                                <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border border-amber-900/50 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
+                                    <h2 className="font-poppins text-2xl font-bold text-amber-400 mb-6">Provider Locations</h2>
+                                    <div className="relative">
+                                        <img 
+                                            src="https://res.cloudinary.com/do2bp6ryt/image/upload/v1761361394/Screenshot_2025-10-25_083210_cogsaa.png" 
+                                            alt="Energy Provider Locations Map" 
+                                            className="w-full h-auto rounded-xl border border-amber-800/30 shadow-lg"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl"></div>
+                                    </div>
+                                    <div className="mt-4 text-center">
+                                        <p className="text-white/80 text-sm">
+                                            Interactive map showing locations of our certified energy providers across India
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Provider Statistics */}
+                                <div className="bg-gradient-to-br from-[#2a211c]/90 to-[#1a1612]/90 border border-amber-900/50 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
+                                    <h3 className="font-poppins text-xl font-bold text-amber-400 mb-4">Provider Statistics</h3>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-white">{providersData.length}</div>
+                                            <div className="text-sm text-white/70">Total Providers</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-white">{energyTypes.length - 1}</div>
+                                            <div className="text-sm text-white/70">Energy Types</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-white">4.7</div>
+                                            <div className="text-sm text-white/70">Avg Rating</div>
+                                        </div>
+                                        <div className="text-center">
+                                            <div className="text-2xl font-bold text-white">8</div>
+                                            <div className="text-sm text-white/70">States Covered</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

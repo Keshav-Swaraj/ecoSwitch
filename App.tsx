@@ -3,8 +3,8 @@ import LandingPage from './components/LandingPage';
 import TrackPage from './pages/TrackPage';
 import DashboardPage from './pages/DashboardPage';
 import AwarenessPage from './pages/AwarenessPage';
-import ProvidersPage from './pages/ProvidersPage'; // Import the new page
-import AboutUsPage from './pages/AboutUsPage'; // Import the About Us page
+import ProvidersPage from './pages/ProvidersPage';
+import AboutUsPage from './pages/AboutUsPage';
 
 const App: React.FC = () => {
   const [route, setRoute] = useState(window.location.hash);

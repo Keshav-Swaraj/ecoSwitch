@@ -16,8 +16,8 @@ const Hero: React.FC = () => {
     >
       <div className="text-center flex flex-col items-center justify-center p-4 max-w-4xl">
         <div className="relative my-4">
-          <h1 className="font-poppins font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wider" style={{ WebkitTextStroke: '1px rgba(252, 211, 77, 0.7)', color: 'transparent' }}>
-            <NeonText>EcoSwitch</NeonText>
+          <h1 className="font-poppins font-black text-6xl sm:text-7xl md:text-8xl lg:text-9xl tracking-wider drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]">
+            <span className="text-white">Eco</span><span className="text-amber-400">Switch</span>
           </h1>
         </div>
         

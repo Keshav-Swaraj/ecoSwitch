@@ -24,7 +24,7 @@ const LeftSidebar: React.FC = () => {
         <nav className="flex flex-col items-center space-y-4">
           {navItems.map((item, index) => {
             // All functional links will now use the handler
-            const isFunctional = item.label === 'HOME' || item.label === 'AWARENESS' || item.label === 'PROVIDERS' || item.label === 'ABOUT US';
+            const isFunctional = item.label === 'HOME' || item.label === 'ABOUT US' || item.label === 'AWARENESS' || item.label === 'PROVIDERS';
             return (
               <a 
                 key={index} 
