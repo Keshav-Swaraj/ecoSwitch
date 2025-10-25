@@ -4,7 +4,7 @@ import { HomeIcon, AboutUsIcon, TrackIcon, AwarenessIcon, ProvidersIcon } from '
 const navItems = [
   { icon: <HomeIcon />, label: 'HOME', hash: '#' },
   { icon: <AboutUsIcon />, label: 'ABOUT US', hash: '#/about' },
-  { icon: <TrackIcon />, label: 'TRACK', hash: '#' },
+  { icon: <TrackIcon />, label: 'TRACK', hash: '#/track/individuals' },
   { icon: <AwarenessIcon />, label: 'AWARENESS', hash: '#/awareness' },
   { icon: <ProvidersIcon />, label: 'PROVIDERS', hash: '#/providers' },
 ];
